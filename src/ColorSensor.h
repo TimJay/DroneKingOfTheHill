@@ -26,11 +26,6 @@ public:
 private:
   uint8_t _led_pin;
 
-  // initial values for integration time registers
-  uint8_t colorCap[4];
-  uint16_t colorInt[4];
-  int8_t colorOffset[4];
-
   void ledOn();
   void ledOff();
 

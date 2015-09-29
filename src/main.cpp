@@ -126,38 +126,17 @@ void showNumberOfRounds() {
 	FastLED.show();
 }
 
-void serialPrintProgress() {
-	Serial.print(points[0]);
-	Serial.print("\t");
-	Serial.print(points[1]);
-	Serial.print("\t");
-	Serial.print(points[2]);
-	Serial.print("\t");
-	Serial.println(points[3]);
-}
-
 void checkProgress() {
 	uint32_t now = millis();
 	if (lastChecked + TEST_INTERVAL < now) {
 		lastChecked = now;
-		//serialPrintProgress();
 		if (colorSensor.isCovered()) {
-			Serial.print(firstCovered);
-			Serial.print("\t");
-			Serial.print(lastUncovered);
-			Serial.print("\t");
-			Serial.println(lastWin);
 			if (firstCovered == 0) {
 				firstCovered = now;
 			}
 			bool coveredLongEnough = now - firstCovered > WIN_INTERVAL;
 			bool uncoveredLongerThenDeadInterval = firstCovered - lastUncovered > DEAD_INTERVAL;
 			bool wasUncoveredSinceLastWin = lastUncovered > lastWin;
-			Serial.print(coveredLongEnough);
-			Serial.print("\t");
-			Serial.print(uncoveredLongerThenDeadInterval);
-			Serial.print("\t");
-			Serial.println(wasUncoveredSinceLastWin);
 			if (coveredLongEnough && uncoveredLongerThenDeadInterval && wasUncoveredSinceLastWin) {
 				Team winner = colorSensor.getTeam();
 				points[winner]++;
@@ -231,7 +210,6 @@ void showResult() {
 }
 
 void setup() {
-	Serial.begin(115200);
 	FastLED.addLeds<LPD8806, DATA_PIN, CLOCK_PIN, GRB>(leds, NUM_LEDS);
 	colorSensor.setup();
 	button.setClickTicks(25);
